@@ -1,50 +1,36 @@
 import React, { memo } from 'react';
-import cn from 'classnames';
 import { Person } from '../../types/Person';
+import { PeopleList } from '../PeopleList/PeopleList';
+import {
+  SetQuery,
+  SetSelectedPersonSlug,
+  SetSuggestionActive,
+} from '../../types/types';
 
 type Props = {
   visiblePeople: Person[];
-  onSelect: (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    personSlug: string,
-    personName: string,
-    status: boolean,
-  ) => void
+  setSelectedPersonSlug: SetSelectedPersonSlug;
+  setQuery: SetQuery;
+  setSuggestionActive: SetSuggestionActive;
 };
 
 export const DropDownMenu:React.FC<Props> = memo(({
   visiblePeople,
-  onSelect,
+  setSelectedPersonSlug,
+  setQuery,
+  setSuggestionActive,
 }) => {
   return (
     <div className="dropdown-menu" role="menu">
       <div className="dropdown-content">
         {visiblePeople.length !== 0
           ? (
-            <>
-              {visiblePeople.map(person => (
-                <div
-                  key={person.slug}
-                  className="dropdown-item"
-                >
-                  <a
-                    href="/"
-                    onClick={(event) => onSelect(
-                      event, person.slug, person.name, false,
-                    )}
-                  >
-                    <p
-                      className={cn(
-                        { 'has-text-link': person.sex === 'm' },
-                        { 'has-text-danger': person.sex === 'f' },
-                      )}
-                    >
-                      {person.name}
-                    </p>
-                  </a>
-                </div>
-              ))}
-            </>
+            <PeopleList
+              visiblePeople={visiblePeople}
+              setSelectedPersonSlug={setSelectedPersonSlug}
+              setQuery={setQuery}
+              setSuggestionActive={setSuggestionActive}
+            />
           )
           : (
             <div className="dropdown-item">
